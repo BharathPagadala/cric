@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winning Update App</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Winning Update App</h2>
+    
+    <input type="text" id="person" placeholder="Enter name" />
+    <input type="number" id="position" placeholder="Enter Position" />
+    <button onclick="addAmount()">Add Position</button>
+
+    <h2>Matches played - 14<h2>
+
+    <table>
+        <thead id="table-heading"></thead>
+        <tbody id="members-table-body"></tbody>
+    </table>
+
+    <script>
+        async function fetchMembers() {
+            const res = await fetch('http://localhost:5500/viewAll');
+            const data = await res.json();
+
+            const tableHeading = document.getElementById('table-heading');
+            const tableBody = document.getElementById('members-table-body');
+
+            if (data.length > 0) {
+                // Use the first element of the array to create table headers
+                const headers = Object.keys(data[0]);
+                tableHeading.innerHTML = '<tr>' + headers.map(header => `<th>${header}</th>`).join('') + '</tr>';
+
+                // Now create table rows starting from index 1
+                tableBody.innerHTML = '';
+                data.slice(1).forEach(member => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = headers.map(header => `<td>${member[header]}</td>`).join('');
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        async function addAmount() {
+            const person = document.getElementById('person').value;
+            const amount = document.getElementById('position').value;
+            await fetch(`http://localhost:5500/addAmount/${person}/${amount}`);
+            fetchMembers();
+        }
+
+        fetchMembers();
+    </script>
+</body>
+</html>
