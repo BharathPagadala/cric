@@ -36,7 +36,7 @@
 
     <script>
         async function fetchMembers() {
-            const res = await fetch('http://cric-rho.vercel.app:5500/viewAll');
+            const res = await fetch('https://cric-rho.vercel.app:5500/viewAll');
             const data = await res.json();
 
             const tableHeading = document.getElementById('table-heading');
@@ -60,7 +60,7 @@
         async function addAmount() {
             const person = document.getElementById('person').value;
             const amount = document.getElementById('position').value;
-            await fetch(`http://cric-rho.vercel.app:5500/addAmount/${person}/${amount}`);
+            await fetch(`https://cric-rho.vercel.app:5500/addAmount/${person}/${amount}`);
             fetchMembers();
         }
 
