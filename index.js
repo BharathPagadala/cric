@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 const positions = [0,100,80,70,50,0,0,0];
-const members1 = fs.readFileSync("E:/projects/cricBackend/user.js");
+const members1 = fs.readFileSync("./user.js");
 const members = JSON.parse(Buffer.from(members1).toString());
 
 
@@ -33,7 +33,7 @@ app.get('/addAmount/:person/:position', (req, res) => {
         member.winnings += parseInt(positions[position]);
         member.earnings = member.winnings - matchesPlayed * 50;
         const _wData = JSON.stringify(members)
-        fs.writeFileSync("E:/projects/cricBackend/user.js", _wData);
+        fs.writeFileSync("./user.js", _wData);
         res.json({ success: true, members });
     } else {
         res.status(404).json({ success: false, message: 'Member not found' });
