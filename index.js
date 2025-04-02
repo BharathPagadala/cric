@@ -12,7 +12,6 @@ app.use(express.json());
 app.use(express.static('public'));
 
 const positions = [0, 100, 80, 70, 50, 0, 0, 0];
-const dataFilePath = path.join(__dirname, 'user.js');
 
 const uri = "mongodb+srv://bharathpagadala0:WvxUvLnzu9M7bb0B@cluster0.um4rsrz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri, {
@@ -31,11 +30,12 @@ async function connectDB() {
     console.error("MongoDB Connection Error:", err);
   }
 }
+console.log(" Calling mongo DB");
 connectDB();
 
 app.get('/viewAll', async (req, res) => {
   try {
-    if (!usersCollection) return res.status(500).json({ error: "Database not initialized" });
+    if (connectDB.usersCollection) return res.status(500).json({ error: "Database not initialized" });
     const members = await usersCollection.find().toArray();
     res.json(members);
   } catch (error) {
